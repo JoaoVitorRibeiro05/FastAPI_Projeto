@@ -1,32 +1,54 @@
-.idea
-.ipynb_checkpoints
-.mypy_cache
-.vscode
-__pycache__
-.pytest_cache
-htmlcov
-dist
-site
-.coverage*
-coverage.xml
-.netlify
-test.db
-log.txt
-Pipfile.lock
-env3.*
-env
-docs_build
-site_build
-venv
-docs.zip
-archive.zip
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# vim temporary files
-*~
-.*.sw?
-.cache
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
 
-# macOS
+# VSCode
+.vscode/
+
+# Mac
 .DS_Store
 
-.codspeed
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# FastAPI / Python cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Jupyter
+.ipynb_checkpoints
+
+# SQLite (caso use)
+*.db
+*.sqlite3
+
+# Uvicorn
+*.pid
+
+# PyCharm
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
