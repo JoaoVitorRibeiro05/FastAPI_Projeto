@@ -68,6 +68,7 @@ class ItensPedidos(base):
         self.pedido = pedido
 
 # executa a criacao dos metadados do seu banco (cria efetivamente o banco de dados) com alembic
+# primeiramente ao instalar o alembic, execute o comando alembic init alembic(cria as pastas do alembic e inicializa)
 # comando -> alembic revision --autogenerate -m "initial migration" 
 # comando para atualizar o esquema do banco de dados  -> alembic upgrade head
 # ou seja, sempre que eu alterar alguma tabela no meu banco de dados, eu tenho que fazer o processo de migration e depois eu tenho que fazer o comando de upgrade(alembic upgrade head)
