@@ -11,3 +11,16 @@ class UsuarioSchema(BaseModel):
 
     class Config:
         from_attrubutes = True
+
+class PedidoSchema(BaseModel):
+    usuario: int
+
+    class Config:
+        from_attributes = True
+
+class LoginSchema(BaseModel):
+    nome:str
+    senha:str
+
+    class Config:
+        from_attributes = True

@@ -1,5 +1,10 @@
+from fastapi import Depends,HTTPException
+from app.main import SECRET_KEY,ALGORITHM,oauth2_schema
 from app.models.models import db
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker,Session
+from app.models.models import Usuario
+
+from jose import jwt, JWTError
 
 
 
@@ -10,3 +15,17 @@ def pegar_sessao():
         yield session
      finally: # independente se der erro ou nao irá executar, e fechar a conexao
         session.close()
+
+def verificar_token(token: str = Depends(oauth2_schema),session: Session = Depends(pegar_sessao)):
+    try:
+      dict_info = jwt.decode(token,SECRET_KEY,ALGORITHM)
+      id_usuario = int(dict_info.get("sub")) 
+
+    except JWTError as e:
+      print(e)
+      raise HTTPException(status_code=401,detail="Acesso negado!\n Verifique a validade!")
+
+    usuario = session.query(Usuario).filter(Usuario.id ==id_usuario).first()
+    if not usuario:
+       raise HTTPException(status_code=401, detail="Acesso invalido")
+    return usuario
