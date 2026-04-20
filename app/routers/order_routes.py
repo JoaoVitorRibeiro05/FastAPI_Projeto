@@ -6,7 +6,7 @@ from app.models.models import Pedido
 
 order_router = APIRouter(prefix="/pedidos", tags = ["Pedidos"])
 
-@order_router.get("/")
+@order_router.get("/",summary="Home")
 async def pedidos():
     """ Rota padrao de pedidos"""
     return {"mensagem": "voce acessou a rota de pedidos"}
