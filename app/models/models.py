@@ -41,7 +41,7 @@ class Pedido(base):
 
     id = Column("id",Integer,primary_key=True,autoincrement=True)
     status = Column("status", String) # status pendente, cancelado e finalizado
-    usuario = Column("usuario", ForeignKey("usuarios.id"))
+    usuario = Column("usuario", ForeignKey("usuarios.id"))# chave estrangeira da tabela usuarios
     preco = Column("preco",Float)
     #itens =
 
