@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine,Column,String,Integer,Boolean,Float,ForeignKey # criar nosso banco de dados, que no caso será o sqlite
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base,relationship
 from sqlalchemy_utils.types import ChoiceType
 
 
@@ -43,12 +43,18 @@ class Pedido(base):
     status = Column("status", String) # status pendente, cancelado e finalizado
     usuario = Column("usuario", ForeignKey("usuarios.id"))# chave estrangeira da tabela usuarios
     preco = Column("preco",Float)
-    #itens =
+    itens = relationship("ItensPedidos", cascade="all,delete")
 
     def __init__(self,usuario,status="PENDENTE",preco=0):
         self.usuario = usuario
         self.status = status
         self.preco = preco 
+    
+    def calcular_preco(self):
+        
+        self.preco = sum(item.preco_unitario * item.quantidade for item in self.itens)
+
+
 
 class ItensPedidos(base):
     __tablename__ = "itens_pedidos"
@@ -56,11 +62,11 @@ class ItensPedidos(base):
     id = Column("id",Integer,primary_key=True,autoincrement=True)
     quantidade = Column("quantidade",Integer)
     sabor = Column("sabor",String)
-    tamanho = Column("tamanho",Integer)
+    tamanho = Column("tamanho",String)
     preco_unitario = Column("preco_unitario", Integer)
     pedido = Column("pedido", ForeignKey("pedidos.id"))
 
-    def __int__(self,quantidade,sabor,tamanho,preco_unitario,pedido):
+    def __init__(self,quantidade,sabor,tamanho,preco_unitario,pedido):
         self.quantidade = quantidade
         self.sabor = sabor
         self.tamanho = tamanho

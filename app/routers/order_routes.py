@@ -1,8 +1,8 @@
 from fastapi import APIRouter,Depends,HTTPException
 from sqlalchemy.orm import Session
 from app.dependecies import pegar_sessao,verificar_token
-from app.schemas.schemas import PedidoSchema
-from app.models.models import Pedido,Usuario
+from app.schemas.schemas import PedidoSchema,ItemPedidoSchema
+from app.models.models import Pedido,Usuario,ItensPedidos
 
 order_router = APIRouter(prefix="/pedidos", tags = ["Pedidos"],dependencies=[Depends(verificar_token)])
 
@@ -63,3 +63,36 @@ async def deletar_pedido(id_pedido: int, session:Session = Depends(pegar_sessao)
               "mensagem" : f"Pedido {pedido.id} deletado com sucesso!",
               "pedido" : pedido
         }
+
+@order_router.get("/listar", summary="Listar pedidos")
+async def listar_pedidos(session:Session = Depends(pegar_sessao),usuario: Usuario = Depends(verificar_token)):
+      if not usuario.admin:
+             raise HTTPException(status_code=401, detail="Voce não tem autorização para listar os pedidos!")
+
+      else:
+            pedidos = session.query(Pedido).all()
+            return {
+                  "Pedidos": pedidos
+            }
+
+@order_router.post("/pedido/Adiciona-item/{id_pedido}")
+async def adicionar_item_pedido(id_pedido:int, Item_pedido_schema:ItemPedidoSchema, session:Session = Depends(pegar_sessao), 
+                                usuario: Usuario = Depends(verificar_token)):
+      pedido = session.query(Pedido).filter(Pedido.id == id_pedido).first()
+      if not pedido:
+            raise HTTPException(status_code=400, detail="Pedido não encontrado!")
+      
+      if not usuario.admin and usuario.id != pedido.usuario:
+            raise HTTPException(status_code=401, detail="Voce não tem autorização para realizar essa operação!")
+      itens_pedido = ItensPedidos(Item_pedido_schema.quantidade, Item_pedido_schema.sabor,
+                                  Item_pedido_schema.tamanho,
+                                  Item_pedido_schema.preco_unitario, id_pedido)
+
+      session.add(itens_pedido)
+      pedido.calcular_preco()
+      session.commit()
+      return {
+            "mensagem": "Item adicionado com sucesso!",
+            "item_id": itens_pedido.id,
+            "preco_pedido": pedido.preco
+      }
