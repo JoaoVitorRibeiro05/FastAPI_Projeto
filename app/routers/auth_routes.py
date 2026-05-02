@@ -39,8 +39,7 @@ def autenticar_usuario(nome,senha,session):
 async def home():
     """Rota padrao de autenticacao"""
     return {
-        "mensagem":"voce acessou a rota de autenticacao",
-        "Autenticacao": True
+        "mensagem":"Api Pedidos"
             }
 
 @auth_router.post("/criar_conta",summary="Criar conta do usuário")

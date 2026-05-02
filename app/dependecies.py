@@ -3,7 +3,6 @@ from app.main import SECRET_KEY,ALGORITHM,oauth2_schema
 from app.models.models import db
 from sqlalchemy.orm import sessionmaker,Session
 from app.models.models import Usuario
-
 from jose import jwt, JWTError
 
 
@@ -23,7 +22,7 @@ def verificar_token(token: str = Depends(oauth2_schema),session: Session = Depen
 
     except JWTError as e:
       print(e)
-      raise HTTPException(status_code=401,detail="Acesso negado!\n Verifique a validade!")
+      raise HTTPException(status_code=401,detail="Acesso negado! Verifique a validade!")
 
     usuario = session.query(Usuario).filter(Usuario.id ==id_usuario).first()
     if not usuario:

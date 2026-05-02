@@ -34,3 +34,11 @@ class ItemPedidoSchema(BaseModel):
 
     class Config:
         from_attributes = True
+
+class ResponsePedidoSchema(BaseModel): # schema para voce personalizar o retorno
+    id:int
+    status:str
+    preco:float
+
+    class Config:
+        from_attributes = True
