@@ -78,3 +78,46 @@ app/
  ├── dependencies.py # Dependências (auth, db, etc)
  ├── main.py         # Ponto de entrada da aplicação
  └── teste.py        # Testes / scripts auxiliares
+
+```
+## ⚙️ Como rodar o projeto
+
+### 🔹 Rodando localmente
+
+```bash
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+
+Acesse:
+http://localhost:8000/docs
+
+```
+### 🔹 Rodando com Docker
+
+#### Build da imagem
+```bash
+docker build -t api-pedidos .
+
+docker run --env-file .env -p 8000:8000 api-pedidos
+```
+#### Acessar a API
+
+Após rodar o container, acesse no navegador:
+
+```text
+
+http://localhost:8000/docs
+
+```
+
+### 🔹 🔑 Variáveis de ambiente (.env)
+
+#### Exemplo:
+```bash
+SECRET_KEY=your_secret_key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+```
+
+
